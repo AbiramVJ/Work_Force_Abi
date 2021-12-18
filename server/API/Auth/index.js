@@ -1,7 +1,10 @@
 import express, { json } from "express";
 
+
 // database model
 import {UserModel} from "../../Database/User/index.js";
+// validation
+import { ValidatedSignin,ValidatingSignup } from "../../validation/auth.js";
 const Router = express.Router();
 
 /**
@@ -14,9 +17,12 @@ const Router = express.Router();
 
 Router.post("/signup", async(req,res)=>{
     try{
+        await ValidatingSignup(req.body);
         await UserModel.findByEmailAndPhone(req.body);
         const addNewUser = await UserModel.create(req.body);
-        return res.json({userAdded:addNewUser,message:"User was Added"});
+        const token = addNewUser.generateJwtToken();
+        return res.status(200).json({token, status:"user was add success"});
+        //return res.json({userAdded:addNewUser,message:"User was Added"});
 
     }catch(error){
         return res.status(500).json({error: error.message});
@@ -34,10 +40,10 @@ Router.post("/signup", async(req,res)=>{
 
  Router.get("/signin", async(req,res)=>{
     try{
-        console.log(req);
-
-        await UserModel.findByEmailAndPassword(req.body);
-        return res.status(200).json({status:"successes"})
+       //
+        const user = await UserModel.findByEmailAndPassword(req.body);
+        const token = user.generateJwtToken();
+        return res.status(200).json({token,status:"successes"})
 
     } catch(error){
         return res.status(500).json({error: error.message});
