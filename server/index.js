@@ -1,25 +1,32 @@
 // modules
-
 import express from "express";
 import cors from "cors";
+import passport from "passport";
 
 //database connection
 import ConnectDB from "./Database/Connection.js";
 
-// use the modules
+//google authentication
+import googleAutheConfig from "./config/google.config.js"
+
+// API
+import Auth from "./API/Auth/index.js";
+import User from "./API/User/index.js"
+
+//use
 const Worker_Force = express();
-
-
 Worker_Force.use(cors());
 Worker_Force.use(express.json());
+Worker_Force.use(passport.initialize());
+
+// passport Config
+googleAutheConfig(passport);
 
 
-// modules
-import Auth from "./API/Auth/index.js";
 
 //application routes
-//Worker_Force.use("/auth",Auth);
-Worker_Force.use("/user",Auth);
+Worker_Force.use("/auth",Auth);
+Worker_Force.use("/user",User);
 
 
 // Server connection portS
@@ -36,4 +43,4 @@ Worker_Force.listen(4000, () => {
         
     })
     
-  });
+});

@@ -1,10 +1,12 @@
 import express, { json } from "express";
+import passport from "passport";
 
 
 // database model
 import {UserModel} from "../../Database/User/index.js";
 // validation
 import { ValidatedSignin,ValidatingSignup } from "../../validation/auth.js";
+// create a rotes
 const Router = express.Router();
 
 /**
@@ -51,4 +53,37 @@ Router.post("/signup", async(req,res)=>{
 })
 
 
+
+/**
+ * Router    /signin
+ * Des        Google signin
+ * Params     none
+ * access     public
+ * method     GET
+ */
+
+ Router.get("/google",passport.authenticate("google",{
+    scope:[
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/userinfo.email",
+    ]
+}));
+
+/**
+ * Router    /google/callback
+ * Des        Google signin callback
+ * Params     none
+ * access     public
+ * method     GET
+ */
+
+ Router.get("/google/callback",passport.authenticate("google",{failureRedirect:"/"}),
+ (req,res)=>{
+     return res.status(200).json({token: req.session.passport.user.token, status:"success"})
+ }
+);
+
 export default Router;
+
+
+

@@ -1,17 +1,18 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+
 const UserSchema = new mongoose.Schema(
   {
     fullName: { type: String, required: true },
     email: { type: String, lowercase: true, required: true },
-    password: { type: String, required: true },
+    password: { type: String,},
     address: [
       { details: { type: String }, for: { type: String },  },
     ],
     phoneNumber: [{ type: Number, required:true}],
-    nic: { type: String, unique: true, required:true},
-    profilePic: {type:mongoose.Types.ObjectId, ref:"Images"},
+    nic: { type: String, unique: true,},
+    profileImage: {type:mongoose.Types.ObjectId, ref:"Images"},
   },
   
 );
