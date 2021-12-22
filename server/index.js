@@ -9,9 +9,13 @@ import ConnectDB from "./Database/Connection.js";
 //google authentication
 import googleAutheConfig from "./config/google.config.js"
 
-// API
-import Auth from "./API/Auth/index.js";
-import User from "./API/User/index.js"
+// module OF Auth API
+import AuthUser from "./API/Auth/User/index.js";
+import AuthWorker from "./API/Auth/Worker/index.js";
+
+//Module of GET POST DELETE PUT APIs
+import User from "./API/User/index.js";
+import Worker from "./API/Worker/index.js"
 
 //use
 const Worker_Force = express();
@@ -25,8 +29,15 @@ googleAutheConfig(passport);
 
 
 //application routes
-Worker_Force.use("/auth",Auth);
+
+//Authentication APIs
+Worker_Force.use("/auth",AuthUser);
+Worker_Force.use("/auth",AuthWorker);
+
+//GET POST DELETE PUT APIs
 Worker_Force.use("/user",User);
+Worker_Force.use("/worker",Worker);
+
 
 
 // Server connection portS

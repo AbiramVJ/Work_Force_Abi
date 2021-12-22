@@ -31,7 +31,7 @@ UserSchema.statics.findByEmailAndPhone = async({email, phoneNumber})=>{
   const checkUserByPhone = await UserModel.findOne({phoneNumber});
 
   if(checkUserByEmail || checkUserByPhone ){
-      throw new Error ("user alredy exists");
+      throw new Error ("user already exists");
   }
   return false;
 };

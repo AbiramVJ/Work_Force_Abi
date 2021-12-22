@@ -3,9 +3,9 @@ import passport from "passport";
 
 
 // database model
-import {UserModel} from "../../Database/User/index.js";
+import {UserModel} from "../../../Database/User/index.js";
 // validation
-import { ValidatedSignin,ValidatingSignup } from "../../validation/auth.js";
+import { ValidatedUserSignin,ValidatingUserSignup } from "../../../validation/auth.js";
 // create a rotes
 const Router = express.Router();
 
@@ -17,9 +17,9 @@ const Router = express.Router();
  * method     POST
  */
 
-Router.post("/signup", async(req,res)=>{
+Router.post("/user/signup", async(req,res)=>{
     try{
-        await ValidatingSignup(req.body);
+        await ValidatingUserSignup(req.body);
         await UserModel.findByEmailAndPhone(req.body);
         const addNewUser = await UserModel.create(req.body);
         const token = addNewUser.generateJwtToken();
@@ -40,9 +40,10 @@ Router.post("/signup", async(req,res)=>{
  * method     GET
  */
 
- Router.get("/signin", async(req,res)=>{
+ Router.get("/user/signin", async(req,res)=>{
     try{
        //
+       await  ValidatedUserSignin(req.body);
         const user = await UserModel.findByEmailAndPassword(req.body);
         const token = user.generateJwtToken();
         return res.status(200).json({token,status:"successes"})
