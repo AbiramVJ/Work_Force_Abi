@@ -1,5 +1,8 @@
 import  mongoose  from "mongoose";
-const mongoDB ="mongodb+srv://abiram:abiram1997@cluster0.wdyso.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+import dotenv from "dotenv";
+dotenv.config();
+const mongoDB =process.env.MONGO_URL;
+
 
 
 export default async()=>{

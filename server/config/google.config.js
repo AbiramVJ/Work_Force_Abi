@@ -1,4 +1,6 @@
 //library
+import dotenv from "dotenv";
+dotenv.config();
 
 import googleOAuth from 'passport-google-oauth20';
 import {UserModel} from '../Database/User/index.js';
@@ -11,9 +13,9 @@ export default(passport)=>{
         new GoogleStrategy(
             {
                 
-                clientID:'866547995561-83eq9bveom0kb1rldf4rpptbt0iotml6.apps.googleusercontent.com',
-                clientSecret:'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',
-                callbackURL:"http://localhost:4000/user/google/callback",
+                clientID:process.env.GOOGLE_CLIENT_ID,  
+                clientSecret:process.env.GOOGLE_CLIENT_SECRET,               
+                callbackURL:"http://localhost:4000/auth/google/callback",
             },
             // recive acceess token data 
             async(accessToken,refreshToken,profile,done)=>{

@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 const WorkerSchema = new mongoose.Schema(
   {
-    fullName: { type: String, required: true },
+    fullName: { type: String, required: true, unique: true },
     email: { type: String, lowercase: true, required: true },
     password: { type: String, required: true },
     Address: [
@@ -35,10 +35,10 @@ WorkerSchema.methods.generateJwtToken = function(){
 
 WorkerSchema.statics.findByEmailAndNic = async({email, Nic})=>{
   const checkWorkerByEmail = await WorkerModel.findOne({email});
-  const checkWorkerByPhone = await WorkerModel.findOne({Nic});
+  const checkWorkerByNice = await WorkerModel.findOne({Nic});
 
-  if(checkWorkerByEmail || checkWorkerByPhone ){
-      throw new Error ("Worker already exists");
+  if(checkWorkerByEmail || checkWorkerByNice ){
+      throw new Error ("Worker already exists check Nic or Email");
   }
   return false;
 };
